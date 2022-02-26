@@ -3,7 +3,8 @@
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
   },
-  "hosting": {
+  "hosting": [{
+    "target": "guess-the-song",
     "public": "build",
     "ignore": [
       "firebase.json",
@@ -16,5 +17,20 @@
         "destination": "/index.html"
       }
     ]
-  }
+  },
+  {
+    "target": "test-guess-the-song",
+    "public": "build",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }]
 }
