@@ -20,6 +20,8 @@
     "build": "craco build",
     "test": "craco test",
     "eject": "craco eject",
+    "lint": "eslint src",
+    "lint:fix": "eslint --fix src",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public"
   },
