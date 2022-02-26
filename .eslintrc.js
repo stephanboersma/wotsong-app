@@ -8,6 +8,7 @@ module.exports = {
     'eslint:recommended',
     'plugin:react/recommended',
     'plugin:prettier/recommended',
+    'plugin:storybook/recommended',
   ],
   parserOptions: {
     ecmaFeatures: {
@@ -25,12 +26,21 @@ module.exports = {
   rules: {
     'prettier/prettier': [
       'error',
-      { endOfLine: 'auto' },
-      { usePrettierrc: true },
+      {
+        endOfLine: 'auto',
+      },
+      {
+        usePrettierrc: true,
+      },
     ],
     'react/display-name': 'off',
     'simple-import-sort/imports': 'error',
     'simple-import-sort/exports': 'error',
-    'react/prop-types': ['error', { ignore: ['children'] }],
+    'react/prop-types': [
+      'error',
+      {
+        ignore: ['children'],
+      },
+    ],
   },
 };
