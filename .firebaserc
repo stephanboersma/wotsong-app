@@ -1,5 +1,17 @@
 {
   "projects": {
     "default": "guess-the-song-d74b8"
+  },
+  "targets": {
+    "guess-the-song-d74b8": {
+      "hosting": {
+        "test-guess-the-song": [
+          "test-guess-the-song"
+        ],
+        "guess-the-song": [
+          "guess-the-song"
+        ]
+      }
+    }
   }
 }
