@@ -33,15 +33,14 @@ jobs:
       REACT_APP_SPOTIFY_TOKEN_ENDPOINT: '${{ secrets.REACT_APP_SPOTIFY_TOKEN_ENDPOINT }}'
       REACT_APP_RECEIVER_APP_ID: '${{ secrets.REACT_APP_RECEIVER_APP_ID }}'
       REACT_APP_CAST_NAMESPACE: '${{ secrets.REACT_APP_CAST_NAMESPACE }}'
-      REACT_APP_ENV: 'dev'
+      REACT_APP_ENV: 'prod'
     steps:
       - uses: actions/checkout@v2
-      - run: curl -o- -L https://yarnpkg.com/install.sh | bash
-      - run: yarn install && yarn lint && yarn build
+      - run: yarn build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_GUESS_THE_SONG_D74B8 }}'
-          target: guess-the-song
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_WOTSONG_APP }}'
+          target: wotsong-app
           channelId: live
-          projectId: guess-the-song-d74b8
+          projectId: wotsong-app

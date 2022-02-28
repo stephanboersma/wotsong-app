@@ -4,7 +4,7 @@
     "indexes": "firestore.indexes.json"
   },
   "hosting": [{
-    "target": "guess-the-song",
+    "target": "wotsong-app",
     "public": "build",
     "ignore": [
       "firebase.json",
@@ -19,7 +19,7 @@
     ]
   },
   {
-    "target": "test-guess-the-song",
+    "target": "test-wotsong-app",
     "public": "build",
     "ignore": [
       "firebase.json",
