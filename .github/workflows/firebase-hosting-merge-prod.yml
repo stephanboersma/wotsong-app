@@ -36,7 +36,8 @@ jobs:
       REACT_APP_ENV: 'prod'
     steps:
       - uses: actions/checkout@v2
-      - run: yarn build
+      - run: curl -o- -L https://yarnpkg.com/install.sh | bash
+      - run: yarn install && yarn lint && yarn build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
