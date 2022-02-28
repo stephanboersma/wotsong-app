@@ -42,6 +42,6 @@ jobs:
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_GUESS_THE_SONG_D74B8 }}'
-          target: test-scrollbar
-          projectId: guess-the-song-d74b8
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_WOTSONG_APP }}'
+          target: test-wotsong-app
+          projectId: wotsong-app
