@@ -7,34 +7,31 @@ import Profile from './pages/Profile';
 import SpotifyCallback from './pages/SpotifyCallback';
 import CastReceiverProvider from './providers/CastReceiverProvider';
 import CastSenderProvider from './providers/CastSenderProvider';
-import RequireAuth from './styles/atoms/RequireAuth';
-import Layout from './styles/templates/Layout';
+import { RequireAuth } from './components';
 
 function App() {
   return (
     <Routes>
-      <Route element={<Layout />}>
-        <Route path="/" element={<Landing />} />
+      <Route path="/" element={<Landing />} />
 
-        <Route
-          path="/app"
-          element={
-            <CastSenderProvider>
-              <RequireAuth>
-                <Profile />
-              </RequireAuth>
-            </CastSenderProvider>
-          }
-        />
-        <Route
-          path="/spotify/authorize"
-          element={
+      <Route
+        path="/app"
+        element={
+          <CastSenderProvider>
             <RequireAuth>
-              <SpotifyCallback />
+              <Profile />
             </RequireAuth>
-          }
-        />
-      </Route>
+          </CastSenderProvider>
+        }
+      />
+      <Route
+        path="/spotify/authorize"
+        element={
+          <RequireAuth>
+            <SpotifyCallback />
+          </RequireAuth>
+        }
+      />
 
       <Route
         path="/cast"
