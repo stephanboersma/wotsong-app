@@ -1,20 +1,14 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import Cast from './pages/Cast';
 import Landing from './pages/Landing';
-import Profile from './pages/Profile';
-import SpotifyCallback from './pages/SpotifyCallback';
-import CastReceiverProvider from './providers/CastReceiverProvider';
-import CastSenderProvider from './providers/CastSenderProvider';
-import { RequireAuth } from './components';
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
 
-      <Route
+      {/* <Route
         path="/app"
         element={
           <CastSenderProvider>
@@ -40,7 +34,7 @@ function App() {
             <Cast />
           </CastReceiverProvider>
         }
-      />
+      /> */}
       <Route
         path="*"
         element={
