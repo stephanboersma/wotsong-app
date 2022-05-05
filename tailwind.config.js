@@ -13,7 +13,7 @@ module.exports = {
         nightsky: '#24306E',
       },
       fontFamily: {
-        Baloo: ['Baloo 2', 'cursive'],
+        baloo: ['"Baloo 2"', '"cursive"'],
       },
     },
   },
