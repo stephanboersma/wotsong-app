@@ -4,11 +4,11 @@ import { Navigate } from 'react-router';
 import AuthContext from '../../contexts/AuthContext';
 
 const RequireAuth = ({ children }) => {
-  const { authenticated, loadingAuthState } = useContext(AuthContext);
+  const { isAuthed, loadingAuthState } = useContext(AuthContext);
   if (loadingAuthState) {
     return <></>;
   }
-  if (!authenticated) {
+  if (!isAuthed()) {
     return <Navigate to="/" />;
   } else {
     return children;
