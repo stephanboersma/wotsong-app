@@ -1,4 +1,5 @@
 import {
+  createUserWithEmailAndPassword,
   EmailAuthProvider,
   linkWithCredential,
   signInAnonymously,
@@ -7,6 +8,24 @@ import {
 
 import { auth } from '.';
 import { saveUser } from '../api/auth';
+
+export const createAccount = (form) => {
+  return new Promise((resolve, reject) => {
+    createUserWithEmailAndPassword(auth, form.email, form.password)
+      .then(async () => {
+        const userData = {
+          alias: form.alias,
+          firstName: form.firstName,
+          lastName: form.lastName,
+          email: form.email,
+        };
+        saveUser(userData)
+          .then((user) => resolve(user))
+          .catch(reject);
+      })
+      .catch(reject);
+  });
+};
 
 export const linkUserWithEmailAndPassword = (form) => {
   return new Promise((resolve, reject) => {

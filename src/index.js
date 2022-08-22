@@ -10,6 +10,7 @@ import Cast from './pages/Cast';
 import Register from './pages/Register';
 import Landing from './pages/Landing';
 import AuthProvider from './providers/AuthProvider';
+import Login from './pages/Login/Login';
 
 ReactDOM.render(
   <BrowserRouter>
@@ -24,6 +25,7 @@ ReactDOM.render(
           }
         >
           <Route index element={<Landing />} />
+          <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
         </Route>
         <Route path="cast" element={<Cast />} />

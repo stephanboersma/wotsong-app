@@ -6,7 +6,7 @@ import { auth } from '../api/firebase';
 import { getCurentUser } from '../api/api/auth';
 import {
   linkUserWithEmailAndPassword,
-  loginAnonymously,
+  createUserWithEmailAndPassword,
   loginWithEmailAndPassword,
   logOut,
 } from '../api/firebase/authentication';
@@ -24,12 +24,20 @@ const AuthProvider = ({ children }) => {
     return false;
   };
 
-  const linkUser = (payload) => {
-    return new Promise((resolve) => {
-      linkUserWithEmailAndPassword(payload).then((user) =>
-        setCurrentUser(user)
-      );
-      resolve();
+  const createUser = (payload) => {
+    return new Promise((resolve, reject) => {
+      if (!isAuthed() && !currentUser) {
+        createUserWithEmailAndPassword(payload).then((user) => {
+          setCurrentUser(user);
+          resolve();
+        });
+      } else if (currentUser?.id) {
+        linkUserWithEmailAndPassword(payload).then((user) => {
+          setCurrentUser(user);
+          resolve();
+        });
+      }
+      reject();
     });
   };
 
@@ -42,8 +50,7 @@ const AuthProvider = ({ children }) => {
         setCurrentUser(user);
         setLoadingAuthState(false);
       } else {
-        const user = await loginAnonymously();
-        setCurrentUser(user);
+        setCurrentUser(null);
         setLoadingAuthState(false);
       }
     });
@@ -56,7 +63,7 @@ const AuthProvider = ({ children }) => {
         loadingAuthState,
         isAuthed,
         loginWithEmailAndPassword,
-        linkUser,
+        createUser,
         logOut,
       }}
     >

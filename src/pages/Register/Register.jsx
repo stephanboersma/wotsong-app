@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 import AuthContext from '../../contexts/AuthContext';
 
 const Register = () => {
-  const { linkUser } = useContext(AuthContext);
+  const { createUser } = useContext(AuthContext);
   const form = useRef(null);
   const navigate = useNavigate();
   const handleSubmit = (event) => {
@@ -15,8 +15,8 @@ const Register = () => {
       payload[key] = value;
     });
     console.table(payload);
-    linkUser(payload).then(() => {
-      navigate('/');
+    createUser(payload).then(() => {
+      navigate('/login');
     });
   };
   return (
