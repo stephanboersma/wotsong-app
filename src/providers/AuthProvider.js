@@ -15,14 +15,36 @@ const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState();
   const [loadingAuthState, setLoadingAuthState] = useState(true);
 
+  const isAuthed = () => {
+    if (currentUser !== null) {
+      if (currentUser?.email !== null) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const linkUser = (payload) => {
+    return new Promise((resolve) => {
+      linkUserWithEmailAndPassword(payload).then((user) =>
+        setCurrentUser(user)
+      );
+      resolve();
+    });
+  };
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (authState) => {
+      console.log(authState);
       if (authState && authState.uid) {
         const user = await getCurentUser();
+        console.table(user);
         setCurrentUser(user);
         setLoadingAuthState(false);
       } else {
-        await loginAnonymously();
+        const user = await loginAnonymously();
+        setCurrentUser(user);
+        setLoadingAuthState(false);
       }
     });
     return unsubscribe;
@@ -31,10 +53,10 @@ const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         currentUser,
-        authenticated: currentUser !== null,
         loadingAuthState,
+        isAuthed,
         loginWithEmailAndPassword,
-        linkUserWithEmailAndPassword,
+        linkUser,
         logOut,
       }}
     >

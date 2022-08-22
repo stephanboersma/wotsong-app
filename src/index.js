@@ -2,15 +2,40 @@ import './index.css';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import Cast from './pages/Cast';
+import Register from './pages/Register';
+import Landing from './pages/Landing';
+import AuthProvider from './providers/AuthProvider';
 
 ReactDOM.render(
   <BrowserRouter>
     <React.StrictMode>
-      <App />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <AuthProvider>
+              <App />
+            </AuthProvider>
+          }
+        >
+          <Route index element={<Landing />} />
+          <Route path="register" element={<Register />} />
+        </Route>
+        <Route path="cast" element={<Cast />} />
+        <Route
+          path="*"
+          element={
+            <main style={{ padding: '1rem' }}>
+              <p>Theres nothing here!.</p>
+            </main>
+          }
+        />
+      </Routes>
     </React.StrictMode>
   </BrowserRouter>,
   document.getElementById('root')
