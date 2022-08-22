@@ -2,11 +2,19 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import Landing from './pages/Landing';
+import AuthProvider from './providers/AuthProvider';
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Landing />} />
+      <Route
+        path="/"
+        element={
+          <AuthProvider>
+            <Landing />
+          </AuthProvider>
+        }
+      />
 
       {/* <Route
         path="/app"
