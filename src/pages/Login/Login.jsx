@@ -5,7 +5,7 @@ import AuthContext from '../../contexts/AuthContext';
 const Login = () => {
   let form = useRef(null);
   const navigate = useNavigate();
-  const { loginWithEmailAndPassword } = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
   const handleSubmit = (event) => {
     event.preventDefault();
     const form_data = new FormData(form.current);
@@ -13,9 +13,7 @@ const Login = () => {
     form_data.forEach(function (value, key) {
       payload[key] = value;
     });
-    loginWithEmailAndPassword(payload.email, payload.password).then(() =>
-      navigate('/')
-    );
+    login(payload.email, payload.password);
     //   console.log("payload", payload);
     // Place your API call here to submit your payload.
   };

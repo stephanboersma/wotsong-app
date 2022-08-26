@@ -5,11 +5,12 @@ import AuthContext from '../../contexts/AuthContext';
 
 const RequireAuth = ({ children }) => {
   const { isAuthed, loadingAuthState } = useContext(AuthContext);
+
   if (loadingAuthState) {
     return <></>;
   }
   if (!isAuthed()) {
-    return <Navigate to="/" />;
+    return <Navigate to="/login" />;
   } else {
     return children;
   }

@@ -1,39 +1,55 @@
-const scopes = [
-  'user-read-currently-playing',
-  'user-read-playback-state',
-  'user-modify-playback-state',
-  'playlist-read-private',
-  'playlist-read-collaborative',
-];
+import { useEffect } from 'react';
+import { post } from '../api/api';
+import { streamAccessToken } from '../api/firebase/authentication';
+import create from 'zustand';
+import { useNavigate } from 'react-router';
+
+export const useSpotifyStore = create((set, get) => ({
+  id: null,
+  accessToken: null,
+  expiresAt: null,
+  isLoadingSpotifyToken: true,
+  setIsLoaded: () =>
+    set((state) => ({ ...state, isLoadingSpotifyToken: false })),
+  setCredentials: (credentials) =>
+    set({
+      ...credentials,
+      isLoadingSpotifyToken: false,
+    }),
+  authenticateWithSpotify: async (token) => {
+    return post(
+      `spotify/token`,
+      {
+        code: token,
+      },
+      true
+    );
+  },
+  isConnectedWithSpotify: () => get().accessToken !== null,
+}));
 
 const useSpotifyApi = () => {
-  const getAccessToken = async (type, token) => {
-    return fetch(
-      `${process.env.REACT_APP_SPOTIFY_TOKEN_ENDPOINT}/spotify/token`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          type: type,
-          code: token,
-        }),
-      }
-    ).then((res) => res.json());
-  };
-  const getAuthLink = () => {
-    return `${
-      process.env.REACT_APP_SPOTIFY_AUTH_ENDPOINT
-    }/authorize?client_id=${
-      process.env.REACT_APP_SPOTIFY_CLIENT_ID
-    }&redirect_uri=${
-      process.env.REACT_APP_BASE_URL
-    }/spotify/authorize&scope=${scopes.join('%20')}&response_type=code`;
-  };
+  const spotifyStore = useSpotifyStore();
+  const navigate = useNavigate();
+  useEffect(() => {
+    const unsubscribe = streamAccessToken({
+      next: (snapshot) => {
+        if (snapshot.exists()) {
+          const data = snapshot.data();
+          spotifyStore.setCredentials(data);
+        } else {
+          navigate('/spotify');
+          spotifyStore.setIsLoaded();
+        }
+      },
+      error: (error) => console.log('An error occurred ' + error.message),
+    });
+    return unsubscribe;
+  }, []);
   return {
-    getAccessToken,
-    getAuthLink,
+    authenticateWithSpotify: spotifyStore.authenticateWithSpotify,
+    isConnectedWithSpotify: spotifyStore.isConnectedWithSpotify,
+    isLoadingSpotifyToken: spotifyStore.isLoadingSpotifyToken,
   };
 };
 export default useSpotifyApi;

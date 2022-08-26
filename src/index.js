@@ -11,6 +11,9 @@ import Register from './pages/Register';
 import Landing from './pages/Landing';
 import AuthProvider from './providers/AuthProvider';
 import Login from './pages/Login/Login';
+import SpotifyConnect from './pages/SpotifyConnect';
+import { RequireAuth } from './components';
+import Profile from './pages/Profile';
 
 ReactDOM.render(
   <BrowserRouter>
@@ -26,6 +29,22 @@ ReactDOM.render(
         >
           <Route index element={<Landing />} />
           <Route path="login" element={<Login />} />
+          <Route
+            path="spotify"
+            element={
+              <RequireAuth>
+                <SpotifyConnect />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="profile"
+            element={
+              <RequireAuth>
+                <Profile />
+              </RequireAuth>
+            }
+          />
           <Route path="register" element={<Register />} />
         </Route>
         <Route path="cast" element={<Cast />} />

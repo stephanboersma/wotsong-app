@@ -16,7 +16,7 @@ const Register = () => {
     });
     console.table(payload);
     createUser(payload).then(() => {
-      navigate('/login');
+      navigate('/spotify');
     });
   };
   return (

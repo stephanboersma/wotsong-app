@@ -1,14 +1,12 @@
 import React, { useContext } from 'react';
+import { logOut } from '../../api/firebase/authentication';
 
-import AuthContext from '../../contexts/AuthContext';
 import CastSenderContext from '../../contexts/CastSenderContext';
-import { signOut } from '../../firebase/api/authentication';
 import useSpotifyApi from '../../hooks/useSpotifyApi';
 
 const Profile = () => {
-  const { user } = useContext(AuthContext);
   const { castContext } = useContext(CastSenderContext);
-  const { getAuthLink } = useSpotifyApi();
+  const { isConnectedWithSpotify } = useSpotifyApi();
   const startGame = () => {
     const session = castContext.getCurrentSession();
 
@@ -18,23 +16,17 @@ const Profile = () => {
       });
     }
   };
-  if (user.spotifyRefreshToken) {
-    return (
-      <>
-        <button onClick={() => signOut()}>sign out</button>
-        <button onClick={() => startGame()}>Start Game sesion</button>
-        <div id="cast-button" style={{ maxWidth: '50px', maxHeight: '50px' }}>
-          <google-cast-launcher></google-cast-launcher>
-        </div>
-      </>
-    );
-  } else {
-    return (
-      <a href={getAuthLink()}>
-        <button>Connect Spotify account</button>
-      </a>
-    );
-  }
+
+  return (
+    <>
+      <button onClick={() => logOut()}>sign out</button>
+      <button onClick={() => startGame()}>Start Game sesion</button>
+      {isConnectedWithSpotify() && <h1>Connected</h1>}
+      <div id="cast-button" style={{ maxWidth: '50px', maxHeight: '50px' }}>
+        <google-cast-launcher></google-cast-launcher>
+      </div>
+    </>
+  );
 };
 
 export default Profile;

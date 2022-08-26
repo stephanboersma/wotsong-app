@@ -5,15 +5,17 @@ import {
   signInAnonymously,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
+import { doc, getDoc, onSnapshot } from 'firebase/firestore';
 
-import { auth } from '.';
+import { auth, db } from '.';
 import { saveUser } from '../api/auth';
 
-export const createAccount = (form) => {
+export const createAccountWithEmailAndPassword = (form) => {
   return new Promise((resolve, reject) => {
     createUserWithEmailAndPassword(auth, form.email, form.password)
-      .then(async () => {
+      .then(async (userCredential) => {
         const userData = {
+          id: userCredential.user.uid,
           alias: form.alias,
           firstName: form.firstName,
           lastName: form.lastName,
@@ -33,6 +35,7 @@ export const linkUserWithEmailAndPassword = (form) => {
     linkWithCredential(auth.currentUser, credential)
       .then(async () => {
         const userData = {
+          id: auth.currentUser.uid,
           alias: form.alias,
           firstName: form.firstName,
           lastName: form.lastName,
@@ -59,7 +62,23 @@ export const loginAnonymously = () => {
   });
 };
 
-export const logOut = () => auth.signOut();
+export const streamAccessToken = (observer) => {
+  return onSnapshot(
+    doc(db, 'spotify_access_tokens', auth.currentUser.uid),
+    observer
+  );
+};
+
+export const getAccessToken = async () => {
+  const snapshot = await getDoc(
+    doc(db, 'spotify_access_tokens', auth.currentUser.uid)
+  );
+  return snapshot.exists() ? snapshot.data() : null;
+};
+
+export const logOut = () => {
+  return auth.signOut();
+};
 
 export const sendResetPasswordEmail = ({ email }) => {
   return auth.sendPasswordResetEmail(email);

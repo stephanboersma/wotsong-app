@@ -6,15 +6,16 @@ import { auth } from '../api/firebase';
 import { getCurentUser } from '../api/api/auth';
 import {
   linkUserWithEmailAndPassword,
-  createUserWithEmailAndPassword,
+  createAccountWithEmailAndPassword,
   loginWithEmailAndPassword,
   logOut,
 } from '../api/firebase/authentication';
+import { useNavigate } from 'react-router';
 
 const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState();
   const [loadingAuthState, setLoadingAuthState] = useState(true);
-
+  const navigate = useNavigate();
   const isAuthed = () => {
     if (currentUser !== null) {
       if (currentUser?.email !== null) {
@@ -25,9 +26,9 @@ const AuthProvider = ({ children }) => {
   };
 
   const createUser = (payload) => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       if (!isAuthed() && !currentUser) {
-        createUserWithEmailAndPassword(payload).then((user) => {
+        createAccountWithEmailAndPassword(payload).then((user) => {
           setCurrentUser(user);
           resolve();
         });
@@ -37,16 +38,24 @@ const AuthProvider = ({ children }) => {
           resolve();
         });
       }
-      reject();
+    });
+  };
+
+  const login = (email, password) => {
+    loginWithEmailAndPassword(email, password).then(async (userCredentials) => {
+      print(userCredentials.user);
+      const user = await getCurentUser();
+      setCurrentUser(user);
+      setLoadingAuthState(false);
+      navigate('/profile');
     });
   };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (authState) => {
-      console.log(authState);
+      console.log('Authstate: ', { authState });
       if (authState && authState.uid) {
         const user = await getCurentUser();
-        console.table(user);
         setCurrentUser(user);
         setLoadingAuthState(false);
       } else {
@@ -62,7 +71,7 @@ const AuthProvider = ({ children }) => {
         currentUser,
         loadingAuthState,
         isAuthed,
-        loginWithEmailAndPassword,
+        login,
         createUser,
         logOut,
       }}
